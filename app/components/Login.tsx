@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { signIn } from "next-auth/react";
 
 import { FcGoogle } from "react-icons/fc";
 import { AiFillGithub } from "react-icons/ai";
@@ -21,7 +22,7 @@ import {
   Stack,
 } from "@mantine/core";
 
-const page = (props: PaperProps) => {
+const Login = (props: PaperProps) => {
   const [type, toggle] = useToggle(["login", "register"]);
 
   return (
@@ -38,13 +39,19 @@ const page = (props: PaperProps) => {
             </Text>
 
             <Group grow mb="md" mt="md">
-              <Button variant="default" color="gray" leftIcon={<FcGoogle />}>
+              <Button
+                variant="default"
+                color="gray"
+                leftIcon={<FcGoogle />}
+                onClick={() => signIn("google")}
+              >
                 Google
               </Button>
               <Button
                 variant="default"
                 color="gray"
                 leftIcon={<AiFillGithub />}
+                onClick={() => signIn("github")}
               >
                 GitHub
               </Button>
@@ -56,4 +63,4 @@ const page = (props: PaperProps) => {
   );
 };
 
-export default page;
+export default Login;

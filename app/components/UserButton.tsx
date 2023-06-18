@@ -5,6 +5,7 @@ import {
   Avatar,
   Text,
   createStyles,
+  Button,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 
@@ -12,7 +13,7 @@ const useStyles = createStyles((theme) => ({
   user: {
     display: "block",
     width: "100%",
-    padding: theme.spacing.md,
+    padding: 5,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
 
     "&:hover": {
@@ -25,9 +26,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface UserButtonProps extends UnstyledButtonProps {
-  image: string;
-  name: string;
-  email: string;
+  image?: string;
+  name?: string;
+  email?: string;
   icon?: React.ReactNode;
 }
 
@@ -49,13 +50,7 @@ export function UserButton({
           <Text size="sm" weight={500}>
             {name}
           </Text>
-
-          <Text color="dimmed" size="xs">
-            {email}
-          </Text>
         </div>
-
-        {icon || <IconChevronRight size="0.9rem" stroke={1.5} />}
       </Group>
     </UnstyledButton>
   );

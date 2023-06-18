@@ -1,6 +1,7 @@
 "use client";
 import { Inter } from "next/font/google";
 import { MantineProvider } from "@mantine/core";
+import { NextAuthProvider } from "./provider";
 
 import "./globals.css";
 
@@ -17,10 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </MantineProvider>
+    <NextAuthProvider>
+      <MantineProvider withGlobalStyles withNormalizeCSS>
+        <html lang="en">
+          <body>{children}</body>
+        </html>
+      </MantineProvider>
+    </NextAuthProvider>
   );
 }
