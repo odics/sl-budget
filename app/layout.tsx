@@ -2,6 +2,8 @@
 import { Inter } from "next/font/google";
 import { MantineProvider } from "@mantine/core";
 
+import "./globals.css";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

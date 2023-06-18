@@ -129,7 +129,7 @@ export default function Home() {
         },
       })}
     >
-      {/* Your application here */}
+      <Button>Hwl</Button>
     </AppShell>
   );
 }
