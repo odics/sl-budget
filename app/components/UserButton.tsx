@@ -8,13 +8,20 @@ import {
   Button,
 } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
+import { redirect } from "next/dist/server/api-utils";
 
 const useStyles = createStyles((theme) => ({
   user: {
     display: "block",
     width: "100%",
-    padding: 5,
+    paddingLeft: "8px",
+    paddingRight: "8px",
+    paddingTop: "5px",
+    paddingBottom: "5px",
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+    border: "1px solid",
+    borderColor: "#eaecef",
+    borderRadius: "4px",
 
     "&:hover": {
       backgroundColor:
@@ -44,10 +51,14 @@ export function UserButton({
   return (
     <UnstyledButton className={classes.user} {...others}>
       <Group>
-        <Avatar src={image} radius="xl" />
+        <Avatar
+          imageProps={{ referrerpolicy: "no-referrer" }}
+          src={image}
+          radius="xl"
+        />
 
         <div style={{ flex: 1 }}>
-          <Text size="sm" weight={500}>
+          <Text size="sm" weight={600}>
             {name}
           </Text>
         </div>

@@ -8,6 +8,7 @@ import Login from "./components/Login";
 
 const Index = () => {
   const { data: session, status } = useSession();
+
   if (status === "authenticated") {
     return (
       <>

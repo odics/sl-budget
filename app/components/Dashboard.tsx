@@ -2,6 +2,7 @@
 
 import { AppShell, Navbar, Header } from "@mantine/core";
 import { signOut, useSession } from "next-auth/react";
+import { BudgetOverview } from "./BudgetOverview";
 
 import {
   Group,
@@ -23,6 +24,7 @@ import {
   IconAdjustments,
   IconLock,
   IconLogout,
+  IconUserEdit,
 } from "@tabler/icons-react";
 
 import { LinksGroup } from "./ui/NavbarLinksGroup";
@@ -42,10 +44,9 @@ const mockdata = [
     ],
   },
   { label: "Analytics", icon: IconPresentationAnalytics },
-  { label: "Settings", icon: IconAdjustments },
   {
     label: "User Settings",
-    icon: IconLock,
+    icon: IconUserEdit,
     link: "/",
   },
 ];
@@ -173,7 +174,7 @@ export default function Dashboard() {
         },
       })}
     >
-      <Button>Hwl</Button>
+      <BudgetOverview />
     </AppShell>
   );
 }
