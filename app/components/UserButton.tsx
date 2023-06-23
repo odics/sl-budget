@@ -5,23 +5,18 @@ import {
   Avatar,
   Text,
   createStyles,
+  Popover,
   Button,
 } from "@mantine/core";
+import { signOut } from "next-auth/react";
 import { IconChevronRight } from "@tabler/icons-react";
-import { redirect } from "next/dist/server/api-utils";
 
 const useStyles = createStyles((theme) => ({
   user: {
     display: "block",
     width: "100%",
-    paddingLeft: "8px",
-    paddingRight: "8px",
-    paddingTop: "5px",
-    paddingBottom: "5px",
+    padding: theme.spacing.md,
     color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
-    border: "1px solid",
-    borderColor: "#eaecef",
-    borderRadius: "4px",
 
     "&:hover": {
       backgroundColor:
@@ -33,9 +28,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface UserButtonProps extends UnstyledButtonProps {
-  image?: string;
-  name?: string;
-  email?: string;
+  image: string;
+  name: string;
+  email: string;
   icon?: React.ReactNode;
 }
 
@@ -49,20 +44,42 @@ export function UserButton({
   const { classes } = useStyles();
 
   return (
-    <UnstyledButton className={classes.user} {...others}>
-      <Group>
-        <Avatar
-          imageProps={{ referrerpolicy: "no-referrer" }}
-          src={image}
-          radius="xl"
-        />
+    <Popover width={200} position="right" withArrow shadow="md">
+      <Popover.Target>
+        <UnstyledButton className={classes.user} {...others}>
+          <Group>
+            <Avatar
+              src={image}
+              radius="xl"
+              imageProps={{ referrerpolicy: "no-referrer" }}
+            />
 
-        <div style={{ flex: 1 }}>
-          <Text size="sm" weight={600}>
-            {name}
-          </Text>
-        </div>
-      </Group>
-    </UnstyledButton>
+            <div style={{ flex: 1 }}>
+              <Text size="sm" weight={500}>
+                {name}
+              </Text>
+
+              <Text color="dimmed" size="xs">
+                {email}
+              </Text>
+            </div>
+
+            {icon || <IconChevronRight size="0.9rem" stroke={1.5} />}
+          </Group>
+        </UnstyledButton>
+      </Popover.Target>
+      <Popover.Dropdown>
+        <Button
+          fullWidth
+          variant="default"
+          color="gray"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </Button>
+      </Popover.Dropdown>
+    </Popover>
   );
 }

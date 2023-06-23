@@ -15,6 +15,9 @@ import {
   IconChevronRight,
 } from "@tabler/icons-react";
 
+import Link from "next/link";
+import { link } from "fs";
+
 const useStyles = createStyles((theme) => ({
   control: {
     fontWeight: 500,
@@ -94,6 +97,7 @@ export function LinksGroup({
 
   return (
     <>
+      {items.map((item) => console.log(item.props.link))}
       <UnstyledButton
         onClick={() => setOpened((o) => !o)}
         className={classes.control}

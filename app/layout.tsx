@@ -1,9 +1,14 @@
 "use client";
 import { Inter } from "next/font/google";
-import { MantineProvider } from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeProvider,
+  ColorScheme,
+} from "@mantine/core";
 import { NextAuthProvider } from "./provider";
 
 import "./globals.css";
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +22,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
+
   return (
     <NextAuthProvider>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
-        <html lang="en">
-          <body>{children}</body>
-        </html>
-      </MantineProvider>
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
+      >
+        <MantineProvider
+          theme={{ colorScheme }}
+          withGlobalStyles
+          withNormalizeCSS
+        >
+          <html lang="en">
+            <body>{children}</body>
+          </html>
+        </MantineProvider>
+      </ColorSchemeProvider>
     </NextAuthProvider>
   );
 }
