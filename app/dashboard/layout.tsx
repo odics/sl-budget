@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 
 // Next
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 // Styles and UI
 import {
@@ -22,6 +23,7 @@ import {
   AppShell,
   Navbar,
   Header,
+  getStylesRef,
 } from "@mantine/core";
 
 import {
@@ -112,6 +114,20 @@ const useStyles = createStyles((theme) => ({
     },
   },
 
+  linkActive: {
+    "&[data-active]:backgroundColor": {
+      color: theme.colors.dark[4],
+    },
+  },
+
+  active: {
+    backgroundColor:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[4]
+        : theme.colors.gray[3],
+    color: theme.white,
+  },
+
   footer: {
     marginLeft: `calc(${theme.spacing.md} * -1)`,
     marginRight: `calc(${theme.spacing.md} * -1)`,
@@ -124,11 +140,10 @@ const useStyles = createStyles((theme) => ({
 export default function Dashboard({ children }: { children: React.ReactNode }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [activeLink, setActiveLink] = useState(1);
+
   const { data: session, status } = useSession();
   const { classes } = useStyles();
-  const links = mockdata.map((item) => (
-    <LinksGroup {...item} key={item.label} />
-  ));
 
   const userAttributes = {
     name: session?.user?.name ?? "Username",
@@ -169,36 +184,47 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           width={{ sm: 200, lg: 250 }}
         >
           <Navbar.Section grow className={classes.links} component={ScrollArea}>
-            <NavLink
-              label="Dashboard"
-              icon={
-                <IconDashboard size={24} strokeWidth={2} color={"#762d86"} />
-              }
-              description="Budget overview"
-              active
-            />
-            <NavLink
-              label="Analytics"
-              icon={
-                <IconPresentationAnalytics
-                  size={24}
-                  strokeWidth={2}
-                  color={"#762d86"}
-                />
-              }
-              description="Budget insights"
-            />
-            <NavLink
-              label="Transactions"
-              icon={
-                <IconArrowsTransferDown
-                  size={24}
-                  strokeWidth={2}
-                  color={"#762d86"}
-                />
-              }
-              description="Manage transactions"
-            />
+            <Link href="/dashboard">
+              <NavLink
+                label="Dashboard"
+                icon={
+                  <IconDashboard size={24} strokeWidth={2} color={"#762d86"} />
+                }
+                description="Budget overview"
+                active={activeLink === 1 ? true : false}
+                onClick={() => setActiveLink(1)}
+              />
+            </Link>
+            <Link href="/dashboard/analytics">
+              <NavLink
+                label="Analytics"
+                icon={
+                  <IconPresentationAnalytics
+                    size={24}
+                    strokeWidth={2}
+                    color={"#762d86"}
+                  />
+                }
+                active={activeLink === 2 ? true : false}
+                onClick={() => setActiveLink(2)}
+                description="Budget insights"
+              />
+            </Link>
+            <Link href="/dashboard/transactions">
+              <NavLink
+                label="Transactions"
+                icon={
+                  <IconArrowsTransferDown
+                    size={24}
+                    strokeWidth={2}
+                    color={"#762d86"}
+                  />
+                }
+                active={activeLink === 3 ? true : false}
+                onClick={() => setActiveLink(3)}
+                description="Manage transactions"
+              />
+            </Link>
           </Navbar.Section>
           <Navbar.Section className={classes.footer}>
             <UserButton {...userAttributes} />
