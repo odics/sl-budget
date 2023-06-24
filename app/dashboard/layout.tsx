@@ -39,7 +39,7 @@ import {
 } from "@tabler/icons-react";
 
 import { LinksGroup } from "../components/ui/NavbarLinksGroup";
-import { Logo } from "../components/ui/Logo";
+import Logo from "../components/ui/Logo";
 import { UserButton } from "../components/UserButton";
 // import { redirect } from "next/dist/server/api-utils";
 
@@ -177,6 +177,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
               icon={
                 <IconDashboard size={24} strokeWidth={2} color={"#762d86"} />
               }
+              description="Budget overview"
+              active
             />
             <NavLink
               label="Analytics"
@@ -187,6 +189,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   color={"#762d86"}
                 />
               }
+              description="Budget insights"
             />
             <NavLink
               label="Transactions"
@@ -197,6 +200,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   color={"#762d86"}
                 />
               }
+              description="Manage transactions"
             />
           </Navbar.Section>
           <Navbar.Section className={classes.footer}>
@@ -224,7 +228,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   mr="xl"
                 />
               </MediaQuery>
-              <Text>Logo</Text>
+              <Logo />
             </Group>
 
             <ThemeToggle />

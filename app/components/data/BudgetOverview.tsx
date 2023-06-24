@@ -27,7 +27,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Income and Spending At a Glance",
+      text: "Income and Spending",
     },
   },
 };

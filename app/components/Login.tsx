@@ -33,7 +33,7 @@ const Login = (props: PaperProps) => {
   } else {
     return (
       <div className="flex h-screen">
-        <div className="w-1/2 border-r bg-[url(../public/login2.jpg)] bg-no-repeat bg-cover bg-center p-6 font-bold text-2xl">
+        <div className="w-1/2 border-r border-slate-400 bg-[url(../public/login2.jpg)] bg-no-repeat bg-cover bg-center p-6 font-bold text-2xl">
           EV Save
           <p className="text-sm font-thin mt-2">
             Plan and manage your spending.
