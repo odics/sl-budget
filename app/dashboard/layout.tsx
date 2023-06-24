@@ -1,47 +1,44 @@
 "use client";
 
-import { AppShell, Navbar, Header } from "@mantine/core";
-import { signOut, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import Loading from "../components/ui/Loading";
-import { ThemeToggle } from "../components/ui/ThemeToggle";
+// React
 import { useState } from "react";
 
+// Auth
+import { useSession } from "next-auth/react";
+
+// Next
+import { redirect } from "next/navigation";
+
+// Styles and UI
 import {
   Group,
-  Box,
-  ThemeIcon,
-  Code,
   ScrollArea,
   createStyles,
   rem,
-  Button,
-  UnstyledButton,
   MediaQuery,
   Burger,
   useMantineTheme,
-  Text,
   NavLink,
-  Popover,
+  AppShell,
+  Navbar,
+  Header,
 } from "@mantine/core";
+
 import {
   IconDashboard,
   IconNotes,
-  IconCalendarStats,
   IconGauge,
   IconPresentationAnalytics,
-  IconFileAnalytics,
-  IconAdjustments,
-  IconLock,
-  IconLogout,
   IconUserEdit,
   IconArrowsTransferDown,
 } from "@tabler/icons-react";
 
+// Custom components
+import Loading from "../components/ui/Loading";
+import { ThemeToggle } from "../components/ui/ThemeToggle";
 import { LinksGroup } from "../components/ui/NavbarLinksGroup";
 import Logo from "../components/ui/Logo";
 import { UserButton } from "../components/UserButton";
-// import { redirect } from "next/dist/server/api-utils";
 
 const mockdata = [
   { label: "Budget Dashboard", icon: IconGauge },

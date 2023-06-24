@@ -40,7 +40,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Spending Breakdown",
+      text: "Spending Breakdown for Current Month",
     },
   },
 };

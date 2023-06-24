@@ -1,10 +1,15 @@
 "use client";
 
+// React
 import React from "react";
+
+// Auth
 import { useSession } from "next-auth/react";
+
+// Next
 import { redirect } from "next/navigation";
 
-import Dashboard from "./components/Dashboard";
+// Custom components
 import Login from "./components/Login";
 
 const Index = () => {

@@ -1,6 +1,9 @@
 "use client";
 
+// React
 import React from "react";
+
+// Styles and UI
 import {
   Container,
   Grid,
@@ -10,6 +13,7 @@ import {
   Paper,
 } from "@mantine/core";
 
+// Custom components
 import BudgetOverview from "../components/data/BudgetOverview";
 import { BudgetSplit } from "../components/data/BudgetSplit";
 import { Transactions } from "../components/data/Transactions";
@@ -57,7 +61,7 @@ const Dashboard = () => {
 
   return (
     <Container my="md" fluid>
-      <Title order={2} mb="sm" color="dimmed">
+      <Title order={3} mb="sm" color="dimmed">
         At a glance
       </Title>
       <Grid style={{ marginBottom: rem(20) }}>
@@ -72,7 +76,7 @@ const Dashboard = () => {
           </Paper>
         </Grid.Col>
       </Grid>
-      <Title order={2} color="dimmed">
+      <Title order={3} color="dimmed">
         Recent transactions
       </Title>
       <Grid>
