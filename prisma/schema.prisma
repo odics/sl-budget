@@ -10,6 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Auth stuff
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -53,4 +55,13 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// Transactions schema
+
+model Transactions {
+  id        String @id @default(cuid())
+  category  Int
+  amount    Int
+  date      String
 }

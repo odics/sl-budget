@@ -4,6 +4,9 @@
 import React from "react";
 import { useState } from "react";
 
+// API
+import axios from "axios";
+
 // Styles and UI
 import {
   Paper,
@@ -17,12 +20,14 @@ import {
   Title,
 } from "@mantine/core";
 
+import { DateInput } from "@mantine/dates";
 import { IconFileUpload } from "@tabler/icons-react";
 
 import DatePicker from "@/app/components/ui/DateInput";
 
 // Custom components
 import { Transactions } from "../../components/data/Transactions";
+import { json } from "stream/consumers";
 
 const data = {
   data: [
@@ -102,6 +107,11 @@ const useStyles = createStyles(
 );
 
 const page = () => {
+  const [account, setAccount] = useState("");
+  const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState<Date | null>(null);
+
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
   const { classes } = useStyles({
@@ -129,6 +139,25 @@ const page = () => {
     />
   );
 
+  async function handleSubmit() {
+    try {
+      const response: Response = await fetch("http://localhost:3000/api/db", {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ hello: "world", please: "work" }),
+      });
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    }
+    // const stringDate = new Date(date as any);
+  }
+
   return (
     <>
       <Title order={3} color="dimmed">
@@ -144,12 +173,22 @@ const page = () => {
               { value: "svelte", label: "Svelte" },
               { value: "vue", label: "Vue" },
             ]}
+            onSelect={(e: any) => {
+              if (e?.target.value) {
+                setAccount(e?.target.value);
+              }
+            }}
           />
           <TextInput
             type="number"
             placeholder="1000"
             rightSection={select}
             rightSectionWidth={92}
+            onChange={(e: any) => {
+              if (e?.target.value) {
+                setAmount(e?.target.value);
+              }
+            }}
           />
           <Select
             placeholder="Category"
@@ -159,9 +198,25 @@ const page = () => {
               { value: "food", label: "Food" },
               { value: "health", label: "Healthcare" },
             ]}
+            onSelect={(e: any) => {
+              if (e?.target.value) {
+                setCategory(e?.target.value);
+              }
+            }}
           />
-          <DatePicker />
-          <Button variant="default" leftIcon={<IconFileUpload size="1rem" />}>
+          <DateInput
+            value={date}
+            valueFormat="DD MM YYYY"
+            onChange={setDate}
+            placeholder="Transaction Date"
+            maw={400}
+            mx="auto"
+          />
+          <Button
+            variant="default"
+            onClick={handleSubmit}
+            leftIcon={<IconFileUpload size="1rem" />}
+          >
             Submit
           </Button>
         </Group>
