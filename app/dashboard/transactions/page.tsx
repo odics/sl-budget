@@ -4,6 +4,9 @@
 import React from "react";
 import { useState } from "react";
 
+// Auth
+import { useSession, getSession } from "next-auth/react";
+
 // API
 import axios from "axios";
 
@@ -107,8 +110,14 @@ const useStyles = createStyles(
 );
 
 const page = () => {
+  // User data
+
+  // User data
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   const [account, setAccount] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
   const [date, setDate] = useState<Date | null>(null);
 
@@ -139,23 +148,31 @@ const page = () => {
     />
   );
 
-  async function handleSubmit() {
+  type Transaction = {
+    account: string;
+    amount: number;
+    category: string;
+    date: string;
+    user: string;
+  };
+
+  async function handleSubmit(data: Transaction) {
     try {
+      //account, amount, category, date
       const response: Response = await fetch("http://localhost:3000/api/db", {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify({ hello: "world", please: "work" }),
+        body: JSON.stringify({ data }),
       });
 
       const result = await response.json();
-      console.log(result);
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
-    // const stringDate = new Date(date as any);
   }
 
   return (
@@ -214,7 +231,19 @@ const page = () => {
           />
           <Button
             variant="default"
-            onClick={handleSubmit}
+            onClick={() => {
+              handleSubmit({
+                account: account,
+                amount: amount,
+                category: category,
+                date: new Date(date as any).toLocaleDateString(undefined, {
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                }),
+                user: userId,
+              });
+            }}
             leftIcon={<IconFileUpload size="1rem" />}
           >
             Submit

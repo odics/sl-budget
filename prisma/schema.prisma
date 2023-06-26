@@ -47,6 +47,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  transactions  Transactions[]
 }
 
 model VerificationToken {
@@ -61,7 +62,10 @@ model VerificationToken {
 
 model Transactions {
   id        String @id @default(cuid())
-  category  Int
+  account   String
   amount    Int
+  category  String
   date      String
+  user      User @relation(fields: [userId], references: [id])
+  userId    String
 }
