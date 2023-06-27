@@ -1,4 +1,7 @@
+// React
 import { useState } from "react";
+
+// UI and styles
 import {
   createStyles,
   Table,
@@ -9,14 +12,21 @@ import {
   Center,
   TextInput,
   rem,
+  Tooltip,
 } from "@mantine/core";
+
 import { keys } from "@mantine/utils";
+
 import {
   IconSelector,
   IconChevronDown,
   IconChevronUp,
   IconSearch,
+  IconArticle,
+  IconTrashXFilled,
 } from "@tabler/icons-react";
+
+import "@/app/globals.css";
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -47,6 +57,7 @@ interface RowData {
   amount: string;
   category: string;
   date: string;
+  note: string;
 }
 
 interface TableSortProps {
@@ -139,12 +150,26 @@ export function Transactions({ data }: TableSortProps) {
       <td>{row.amount}</td>
       <td>{row.category}</td>
       <td>{row.date}</td>
+      <td>
+        <Center>
+          <Tooltip label={row.note}>
+            <IconArticle size="1.2rem" />
+          </Tooltip>
+        </Center>
+      </td>
+      <td>
+        <Center>
+          <IconTrashXFilled size="1.2rem" />
+        </Center>
+      </td>
     </tr>
   ));
 
   return (
     <ScrollArea>
       <Table
+        highlightOnHover
+        striped
         horizontalSpacing="md"
         verticalSpacing="xs"
         miw={700}
@@ -180,6 +205,16 @@ export function Transactions({ data }: TableSortProps) {
             >
               <Text weight={700}>Transaction date</Text>
             </Th>
+            <th className="th-icon">
+              <Center>
+                <Text weight={700}>Note</Text>
+              </Center>
+            </th>
+            <th className="th-icon">
+              <Center>
+                <Text weight={700}>Action</Text>
+              </Center>
+            </th>
           </tr>
         </thead>
         <tbody>

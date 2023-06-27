@@ -2,13 +2,13 @@
 
 // React
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Auth
 import { useSession, getSession } from "next-auth/react";
 
 // API
-import axios from "axios";
+import { fetchTransactions } from "@/app/lib/datafetching/fetch";
 
 // Styles and UI
 import {
@@ -20,7 +20,9 @@ import {
   Select,
   NativeSelect,
   Button,
+  Input,
   Title,
+  Skeleton,
 } from "@mantine/core";
 
 import { DateInput } from "@mantine/dates";
@@ -39,30 +41,40 @@ const data = {
       amount: "345.00",
       category: "Food",
       date: "January 21, 2022",
+      id: "123",
+      note: "This is a note about your transaction",
     },
     {
       account: "HSBC",
       amount: "2100.00",
       category: "Bills",
       date: "March 14, 2022",
+      id: "123",
+      note: "This is a note about your transaction",
     },
     {
       account: "Revolut",
       amount: "1200.00",
       category: "Bills",
       date: "June 20, 2022",
+      id: "123",
+      note: "This is a note about your transaction",
     },
     {
       account: "HSBC",
       amount: "4200.00",
       category: "Income",
       date: "July 8, 2022",
+      id: "123",
+      note: "This is a note about your transaction",
     },
     {
       account: "Revolut",
       amount: "4.00",
       category: "Food",
       date: "July 27, 2022",
+      id: "123",
+      note: "This is a note about your transaction",
     },
   ],
 };
@@ -116,16 +128,20 @@ const page = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
+  // Transaction data
   const [account, setAccount] = useState("");
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
   const [date, setDate] = useState<Date | null>(null);
+  const [note, setNote] = useState("");
+  const [transactionData, setTransactionData] = useState<any>(null);
 
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
   const { classes } = useStyles({
     floating: value.trim().length !== 0 || focused,
   });
+
   const currency = [
     { value: "eur", label: "🇪🇺 EUR" },
     { value: "usd", label: "🇺🇸 USD" },
@@ -153,8 +169,18 @@ const page = () => {
     amount: number;
     category: string;
     date: string;
+    note: string;
     user: string;
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchTransactions();
+      setTransactionData(data);
+    }
+
+    fetchData();
+  }, []);
 
   async function handleSubmit(data: Transaction) {
     try {
@@ -174,7 +200,7 @@ const page = () => {
       console.error(error);
     }
   }
-
+  console.log(data);
   return (
     <>
       <Title order={3} color="dimmed">
@@ -183,12 +209,11 @@ const page = () => {
       <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
         <Group grow>
           <Select
-            placeholder="Pick one"
+            placeholder="Account"
             data={[
-              { value: "react", label: "React" },
-              { value: "ng", label: "Angular" },
-              { value: "svelte", label: "Svelte" },
-              { value: "vue", label: "Vue" },
+              { value: "hsbc", label: "HSBC" },
+              { value: "bofa", label: "Bank of America" },
+              { value: "revolut", label: "Revolut" },
             ]}
             onSelect={(e: any) => {
               if (e?.target.value) {
@@ -229,6 +254,12 @@ const page = () => {
             maw={400}
             mx="auto"
           />
+          <Input
+            placeholder="Add Note"
+            onChange={(e) => {
+              setNote(e.target.value);
+            }}
+          />
           <Button
             variant="default"
             onClick={() => {
@@ -241,6 +272,7 @@ const page = () => {
                   month: "numeric",
                   year: "numeric",
                 }),
+                note: note,
                 user: userId,
               });
             }}
@@ -254,7 +286,42 @@ const page = () => {
         All transactions
       </Title>
       <Paper shadow="xs" p="sm" mb="md" mt="sm" withBorder>
-        <Transactions {...data} />
+        {transactionData !== null ? (
+          <Transactions {...transactionData} />
+        ) : (
+          <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
+            <Group grow mb="lg">
+              <Skeleton height={40} radius="sm" />
+              <Skeleton height={40} radius="sm" />
+              <Skeleton height={40} radius="sm" />
+              <Skeleton height={40} radius="sm" />
+            </Group>
+            <Group grow>
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+            </Group>
+            <Group grow>
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+            </Group>
+            <Group grow>
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+              <Skeleton height={25} radius="sm" mb="sm" />
+            </Group>
+            <Group grow>
+              <Skeleton height={25} radius="sm" />
+              <Skeleton height={25} radius="sm" />
+              <Skeleton height={25} radius="sm" />
+              <Skeleton height={25} radius="sm" />
+            </Group>
+          </Paper>
+        )}
       </Paper>
     </>
   );

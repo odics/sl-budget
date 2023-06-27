@@ -14,11 +14,6 @@ import {
   ColorScheme,
 } from "@mantine/core";
 
-export const metadata = {
-  title: "EV Save",
-  description: "Plan and manage your budget.",
-};
-
 export default function RootLayout({
   children,
 }: {
