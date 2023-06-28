@@ -4,11 +4,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
+// Reach Query
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
 // Auth
 import { useSession, getSession } from "next-auth/react";
 
 // API
-import { fetchTransactions } from "@/app/lib/datafetching/fetch";
+import { fetchTransactions } from "@/app/lib/data/dataHandler";
+import { addTransaction } from "@/app/lib/data/dataHandler";
 
 // Styles and UI
 import {
@@ -33,51 +37,6 @@ import DatePicker from "@/app/components/ui/DateInput";
 // Custom components
 import { Transactions } from "../../components/data/Transactions";
 import { json } from "stream/consumers";
-
-const data = {
-  data: [
-    {
-      account: "HSBC",
-      amount: "345.00",
-      category: "Food",
-      date: "January 21, 2022",
-      id: "123",
-      note: "This is a note about your transaction",
-    },
-    {
-      account: "HSBC",
-      amount: "2100.00",
-      category: "Bills",
-      date: "March 14, 2022",
-      id: "123",
-      note: "This is a note about your transaction",
-    },
-    {
-      account: "Revolut",
-      amount: "1200.00",
-      category: "Bills",
-      date: "June 20, 2022",
-      id: "123",
-      note: "This is a note about your transaction",
-    },
-    {
-      account: "HSBC",
-      amount: "4200.00",
-      category: "Income",
-      date: "July 8, 2022",
-      id: "123",
-      note: "This is a note about your transaction",
-    },
-    {
-      account: "Revolut",
-      amount: "4.00",
-      category: "Food",
-      date: "July 27, 2022",
-      id: "123",
-      note: "This is a note about your transaction",
-    },
-  ],
-};
 
 const useStyles = createStyles(
   (theme, { floating }: { floating: boolean }) => ({
@@ -135,6 +94,7 @@ const page = () => {
   const [date, setDate] = useState<Date | null>(null);
   const [note, setNote] = useState("");
   const [transactionData, setTransactionData] = useState<any>(null);
+  const [fetching, setFetching] = useState(false);
 
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
@@ -182,25 +142,28 @@ const page = () => {
     fetchData();
   }, []);
 
-  async function handleSubmit(data: Transaction) {
-    try {
-      //account, amount, category, date
-      const response: Response = await fetch("http://localhost:3000/api/db", {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ data }),
-      });
+  const queryClient = useQueryClient();
 
-      const result = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+  const { isLoading, error, data } = useQuery({
+    queryKey: ["transactionData"],
+    queryFn: () =>
+      fetch("http://localhost:3000/api/db").then((res) => res.json()),
+  });
+
+  const transData = { data: data };
+  console.log("Data from parent component: ", transData);
+
+  const mutation = useMutation({
+    mutationFn: addTransaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactionData"] });
+    },
+  });
+
+  function handleSubmit(data: Transaction) {
+    mutation.mutate(data);
   }
-  console.log(data);
+
   return (
     <>
       <Title order={3} color="dimmed">
@@ -287,7 +250,7 @@ const page = () => {
       </Title>
       <Paper shadow="xs" p="sm" mb="md" mt="sm" withBorder>
         {transactionData !== null ? (
-          <Transactions {...transactionData} />
+          <Transactions />
         ) : (
           <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
             <Group grow mb="lg">

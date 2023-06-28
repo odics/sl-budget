@@ -9,8 +9,6 @@ export async function POST(request: NextRequest) {
 
   let transaction: Prisma.TransactionsCreateInput;
 
-  console.log(data);
-
   transaction = {
     account: data.account,
     amount: parseInt(data.amount as string),
@@ -22,11 +20,15 @@ export async function POST(request: NextRequest) {
 
   console.log(transaction);
 
-  const createTransaction = await prisma.transactions.create({
-    data: transaction,
-  });
+  try {
+    const createTransaction = await prisma.transactions.create({
+      data: transaction,
+    });
 
-  return NextResponse.json({ message: "Data received." });
+    return NextResponse.json(transaction);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function GET() {
@@ -40,6 +42,4 @@ export async function GET() {
   });
 
   return NextResponse.json(transactions);
-
-  console.log(transactions);
 }

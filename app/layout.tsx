@@ -3,6 +3,13 @@
 // React
 import { useState } from "react";
 
+// React Query
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+
 // Auth
 import { NextAuthProvider } from "./provider";
 
@@ -14,6 +21,8 @@ import {
   ColorScheme,
 } from "@mantine/core";
 
+const queryClient = new QueryClient();
+
 export default function RootLayout({
   children,
 }: {
@@ -24,21 +33,23 @@ export default function RootLayout({
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 
   return (
-    <NextAuthProvider>
-      <ColorSchemeProvider
-        colorScheme={colorScheme}
-        toggleColorScheme={toggleColorScheme}
-      >
-        <MantineProvider
-          theme={{ colorScheme }}
-          withGlobalStyles
-          withNormalizeCSS
+    <QueryClientProvider client={queryClient}>
+      <NextAuthProvider>
+        <ColorSchemeProvider
+          colorScheme={colorScheme}
+          toggleColorScheme={toggleColorScheme}
         >
-          <html lang="en">
-            <body>{children}</body>
-          </html>
-        </MantineProvider>
-      </ColorSchemeProvider>
-    </NextAuthProvider>
+          <MantineProvider
+            theme={{ colorScheme }}
+            withGlobalStyles
+            withNormalizeCSS
+          >
+            <html lang="en">
+              <body>{children}</body>
+            </html>
+          </MantineProvider>
+        </ColorSchemeProvider>
+      </NextAuthProvider>
+    </QueryClientProvider>
   );
 }

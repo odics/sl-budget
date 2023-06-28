@@ -195,21 +195,6 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 onClick={() => setActiveLink(1)}
               />
             </Link>
-            <Link href="/dashboard/analytics">
-              <NavLink
-                label="Analytics"
-                icon={
-                  <IconPresentationAnalytics
-                    size={24}
-                    strokeWidth={2}
-                    color={"#762d86"}
-                  />
-                }
-                active={activeLink === 2 ? true : false}
-                onClick={() => setActiveLink(2)}
-                description="Budget insights"
-              />
-            </Link>
             <Link href="/dashboard/transactions">
               <NavLink
                 label="Transactions"
@@ -223,6 +208,21 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 active={activeLink === 3 ? true : false}
                 onClick={() => setActiveLink(3)}
                 description="Manage transactions"
+              />
+            </Link>
+            <Link href="/dashboard/analytics">
+              <NavLink
+                label="Analytics"
+                icon={
+                  <IconPresentationAnalytics
+                    size={24}
+                    strokeWidth={2}
+                    color={"#762d86"}
+                  />
+                }
+                active={activeLink === 2 ? true : false}
+                onClick={() => setActiveLink(2)}
+                description="Budget insights"
               />
             </Link>
           </Navbar.Section>
