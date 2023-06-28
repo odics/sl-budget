@@ -28,8 +28,8 @@ import {
   Title,
   Skeleton,
 } from "@mantine/core";
-
 import { DateInput } from "@mantine/dates";
+import { notifications } from "@mantine/notifications";
 import { IconFileUpload } from "@tabler/icons-react";
 
 import DatePicker from "@/app/components/ui/DateInput";
@@ -133,15 +133,6 @@ const page = () => {
     user: string;
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchTransactions();
-      setTransactionData(data);
-    }
-
-    fetchData();
-  }, []);
-
   const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery({
@@ -149,9 +140,6 @@ const page = () => {
     queryFn: () =>
       fetch("http://localhost:3000/api/db").then((res) => res.json()),
   });
-
-  const transData = { data: data };
-  console.log("Data from parent component: ", transData);
 
   const mutation = useMutation({
     mutationFn: addTransaction,
@@ -238,6 +226,9 @@ const page = () => {
                 note: note,
                 user: userId,
               });
+              notifications.show({
+                message: "Transaction successfully added.",
+              });
             }}
             leftIcon={<IconFileUpload size="1rem" />}
           >
@@ -249,42 +240,7 @@ const page = () => {
         All transactions
       </Title>
       <Paper shadow="xs" p="sm" mb="md" mt="sm" withBorder>
-        {transactionData !== null ? (
-          <Transactions />
-        ) : (
-          <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
-            <Group grow mb="lg">
-              <Skeleton height={40} radius="sm" />
-              <Skeleton height={40} radius="sm" />
-              <Skeleton height={40} radius="sm" />
-              <Skeleton height={40} radius="sm" />
-            </Group>
-            <Group grow>
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-            </Group>
-            <Group grow>
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-            </Group>
-            <Group grow>
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-              <Skeleton height={25} radius="sm" mb="sm" />
-            </Group>
-            <Group grow>
-              <Skeleton height={25} radius="sm" />
-              <Skeleton height={25} radius="sm" />
-              <Skeleton height={25} radius="sm" />
-              <Skeleton height={25} radius="sm" />
-            </Group>
-          </Paper>
-        )}
+        <Transactions />
       </Paper>
     </>
   );

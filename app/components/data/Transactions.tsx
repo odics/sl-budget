@@ -1,9 +1,22 @@
 import { Table, Center, Tooltip, Paper, Group, Skeleton } from "@mantine/core";
 import { IconTrashXFilled, IconArticle } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { deleteTransaction } from "@/app/lib/data/dataHandler";
 import "@/app/globals.css";
 
 export function Transactions() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: deleteTransaction,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactionData"] });
+    },
+  });
+
+  function handleClick(data: any) {
+    mutation.mutate(data);
+  }
+
   const { isLoading, error, data } = useQuery({
     queryKey: ["transactionData"],
     queryFn: () =>
@@ -61,7 +74,15 @@ export function Transactions() {
         </td>
         <td>
           <Center>
-            <IconTrashXFilled size="1.2rem" />
+            <IconTrashXFilled
+              size="1.2rem"
+              onClick={() => {
+                handleClick({
+                  transactionId: element.id,
+                  userId: element.userId,
+                });
+              }}
+            />
           </Center>
         </td>
       </tr>

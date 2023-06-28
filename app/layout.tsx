@@ -20,6 +20,7 @@ import {
   ColorSchemeProvider,
   ColorScheme,
 } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ export default function RootLayout({
             withGlobalStyles
             withNormalizeCSS
           >
+            <Notifications />
             <html lang="en">
               <body>{children}</body>
             </html>

@@ -40,3 +40,29 @@ export const addTransaction = async (data: Transaction) => {
     console.error(error);
   }
 };
+
+export const deleteTransaction = async (data: any) => {
+  try {
+    console.log("Data being sent via fetch: ", data);
+    const response: Response = await fetch(
+      `http://localhost:3000/api/db/delete/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          userId: data.userId,
+          transactionId: data.transactionId,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
