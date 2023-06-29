@@ -62,7 +62,7 @@ model VerificationToken {
 // Transactions schema
 
 model Transactions {
-  id       String @id @default(cuid())
+  id       String @id @unique @default(cuid())
   account  String
   amount   Int
   category String

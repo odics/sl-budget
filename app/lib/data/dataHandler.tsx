@@ -66,3 +66,25 @@ export const deleteTransaction = async (data: any) => {
     console.error(error);
   }
 };
+
+export const updateTransaction = async (data: any) => {
+  try {
+    console.log("Data being sent via fetch: ", data);
+    const response: Response = await fetch(`http://localhost:3000/api/db/`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify({
+        data,
+      }),
+    });
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};

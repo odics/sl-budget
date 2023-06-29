@@ -174,9 +174,7 @@ const page = () => {
           />
           <TextInput
             type="number"
-            placeholder="1000"
-            rightSection={select}
-            rightSectionWidth={92}
+            placeholder="Amount"
             onChange={(e: any) => {
               if (e?.target.value) {
                 setAmount(e?.target.value);

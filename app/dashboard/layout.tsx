@@ -181,7 +181,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 200, lg: 250 }}
+          width={{ sm: 200, lg: 270 }}
         >
           <Navbar.Section grow className={classes.links} component={ScrollArea}>
             <Link href="/dashboard">
@@ -202,7 +202,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   <IconArrowsTransferDown
                     size={24}
                     strokeWidth={2}
-                    color={"#762d86"}
+                    color="#762d86"
                   />
                 }
                 active={activeLink === 3 ? true : false}

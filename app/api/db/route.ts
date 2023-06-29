@@ -43,3 +43,25 @@ export async function GET() {
 
   return NextResponse.json(transactions);
 }
+
+export async function PUT(request: NextRequest) {
+  const data = await request.json();
+  console.log("PUT data", typeof data.data.amount);
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+  const updateTransaction = await prisma.transactions.update({
+    where: {
+      id: data.data.transactionId,
+    },
+    data: {
+      amount: Number(data.data.amount),
+      account: data.data.account,
+      date: data.data.date,
+      note: data.data.note,
+      category: data.data.category,
+    },
+  });
+
+  return NextResponse.json("Success");
+}
