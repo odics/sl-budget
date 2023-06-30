@@ -7,6 +7,8 @@ type Transaction = {
   user: string;
 };
 
+// Transactions
+
 export const fetchTransactions = async () => {
   try {
     const response = await fetch("http://localhost:3000/api/db", {
@@ -86,5 +88,23 @@ export const updateTransaction = async (data: any) => {
     return result;
   } catch (error) {
     console.error(error);
+  }
+};
+
+// Accounts
+
+export const fetchAccounts = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/api/db/accounts", {
+      cache: "no-store",
+    });
+    const accounts = await response.json();
+
+    const data = { data: accounts };
+
+    console.log(accounts);
+    return accounts;
+  } catch (error) {
+    console.log(error);
   }
 };

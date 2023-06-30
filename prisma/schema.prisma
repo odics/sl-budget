@@ -73,9 +73,11 @@ model Transactions {
 }
 
 model Accounts {
-  id       String @id @default(cuid())
-  name     String
-  currency String
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
+  id          String @id @default(cuid())
+  name        String
+  institution String
+  owner       String
+  currency    String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
 }
