@@ -102,9 +102,81 @@ export const fetchAccounts = async () => {
 
     const data = { data: accounts };
 
-    console.log(accounts);
     return accounts;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const addAccount = async (data: Transaction) => {
+  try {
+    const response: Response = await fetch(
+      "http://localhost:3000/api/db/accounts",
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ data }),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteAccount = async (data: any) => {
+  try {
+    console.log("Data being sent via fetch: ", data);
+    const response: Response = await fetch(
+      `http://localhost:3000/api/db/accounts/delete/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          accountId: data.accountId,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateAccount = async (data: any) => {
+  try {
+    console.log("Data being sent via fetch: ", data);
+    const response: Response = await fetch(
+      `http://localhost:3000/api/db/accounts`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          data,
+        }),
+      }
+    );
+
+    const result = await response.json();
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    console.error(error);
   }
 };
