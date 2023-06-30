@@ -251,21 +251,23 @@ export function Transactions() {
                     }),
                     note: note,
                     user: userId,
-                    transactionId: transactionId,
+                    transactionId: transactionId ? transactionId : "",
                   });
                 }}
               >
                 Submit changes
               </Button>
             </Flex>
-            <DatePicker
-              // date={date as Date | undefined}
-              // valueFormat="DD MM YYYY"
-              onChange={setDate}
-              placeholder="Transaction Date"
-              maw={400}
-              mx="auto"
-            />
+            <Flex direction="column">
+              <DatePicker
+                value={date}
+                defaultDate={date as Date | undefined}
+                onChange={setDate}
+                placeholder="Transaction Date"
+                maw={400}
+                mx="auto"
+              />
+            </Flex>
           </Group>
         </Modal>
         <Table>

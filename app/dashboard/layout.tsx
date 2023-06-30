@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 
 // Next
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import Link from "next/link";
 
 // Styles and UI
@@ -159,6 +159,8 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
     return <Loading />;
   }
 
+  const pathname = usePathname();
+
   return (
     <AppShell
       styles={{
@@ -191,8 +193,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                   <IconDashboard size={24} strokeWidth={2} color={"#762d86"} />
                 }
                 description="Budget overview"
-                active={activeLink === 1 ? true : false}
-                onClick={() => setActiveLink(1)}
+                active={pathname === "/dashboard" ? true : false}
               />
             </Link>
             <Link href="/dashboard/transactions">
@@ -205,8 +206,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     color="#762d86"
                   />
                 }
-                active={activeLink === 3 ? true : false}
-                onClick={() => setActiveLink(3)}
+                active={pathname === "/dashboard/transactions" ? true : false}
                 description="Manage transactions"
               />
             </Link>
@@ -220,8 +220,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                     color={"#762d86"}
                   />
                 }
-                active={activeLink === 2 ? true : false}
-                onClick={() => setActiveLink(2)}
+                active={pathname === "/dashboard/analytics" ? true : false}
                 description="Budget insights"
               />
             </Link>
