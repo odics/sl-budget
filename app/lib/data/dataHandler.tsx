@@ -101,8 +101,28 @@ export const fetchAccounts = async () => {
     const accounts = await response.json();
 
     const data = { data: accounts };
-
+    console.log(data);
     return accounts;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchAccountList = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/db/accounts/accountlist",
+      {
+        cache: "no-store",
+      }
+    );
+    const accounts = await response.json();
+
+    const data = accounts.map((account: any) => {
+      return { value: account.name, label: account.name };
+    });
+    console.log("Data ", data);
+    return data;
   } catch (error) {
     console.log(error);
   }

@@ -17,6 +17,7 @@ import {
   Tooltip,
   Modal,
   Skeleton,
+  Container,
 } from "@mantine/core";
 
 import { notifications } from "@mantine/notifications";
@@ -280,118 +281,99 @@ export default function Accounts() {
             </Button>
           </Flex>
         </Modal>
-
-        <Grid justify="center">
-          <Grid.Col span={7}>
-            <Flex direction="column">
-              <Title order={3} color="dimmed">
-                Account management
-              </Title>
-              <Text fz="xs" color="dimmed">
-                Use this section to add and remove bank accounts, label them,
-                and set currencies, etc.
-              </Text>
-              <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
-                <Title order={4} color="dimmed">
-                  Current accounts
-                </Title>
-                <Divider my="sm" />
-                <Table striped className="mb-6">
-                  <thead>
-                    <tr>
-                      <th>Account name</th>
-                      <th>Institution</th>
-                      <th>Account owner</th>
-                      <th>Currency</th>
-                      <th className="th-icon">
-                        <Center>Action</Center>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>{rows}</tbody>
-                </Table>
-                <Title order={4} color="dimmed">
-                  Add account
-                </Title>
-                <Divider my="sm" />
-                <Flex justify="center" align="center" gap="lg">
-                  <TextInput
-                    size="xs"
-                    type="string"
-                    placeholder="Account name"
-                    width={"100px"}
-                    onChange={(e: any) => {
-                      if (e?.target.value) {
-                        setAccountName(e?.target.value);
-                      }
-                    }}
-                  />
-                  <TextInput
-                    size="xs"
-                    type="string"
-                    placeholder="Institution"
-                    onChange={(e: any) => {
-                      if (e?.target.value) {
-                        setInstitution(e?.target.value);
-                      }
-                    }}
-                  />
-                  <TextInput
-                    size="xs"
-                    type="string"
-                    placeholder="Account owner(s)"
-                    onChange={(e: any) => {
-                      setAccountOwner(e?.target.value);
-                      console.log(e.target.value);
-                    }}
-                  />
-                  <Select
-                    size="xs"
-                    placeholder="Currency"
-                    data={[
-                      { value: "pounds", label: "Pounds" },
-                      { value: "dollars", label: "Dollars" },
-                    ]}
-                    onSelect={(e: any) => {
-                      if (e?.target.value) {
-                        setAccountCurrency(e?.target.value);
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="default"
-                    size="xs"
-                    leftIcon={<IconFileUpload size="1rem" />}
-                    onClick={() => {
-                      handleAddAccount({
-                        accountName: accountName,
-                        institution: institution,
-                        accountOwner: accountOwner,
-                        accountCurrency: accountCurrency,
-                        userId: userId,
-                      });
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </Flex>
-              </Paper>
+        <Container>
+          <Flex direction="column">
+            <Title order={3} color="dimmed">
+              Account management
+            </Title>
+            <Text fz="xs" color="dimmed" className="mb-4">
+              Use this section to add and remove bank accounts.
+            </Text>
+            <Title order={4} color="dimmed">
+              Current accounts
+            </Title>
+            <Divider my="sm" />
+            <Table striped className="mb-6">
+              <thead>
+                <tr>
+                  <th>Account name</th>
+                  <th>Institution</th>
+                  <th>Account owner</th>
+                  <th>Currency</th>
+                  <th className="th-icon">
+                    <Center>Action</Center>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>{rows}</tbody>
+            </Table>
+            <Title order={4} color="dimmed">
+              Add account
+            </Title>
+            <Divider my="sm" />
+            <Flex justify="center" align="center" gap="lg">
+              <TextInput
+                size="xs"
+                type="string"
+                placeholder="Account name"
+                width={"100px"}
+                onChange={(e: any) => {
+                  if (e?.target.value) {
+                    setAccountName(e?.target.value);
+                  }
+                }}
+              />
+              <TextInput
+                size="xs"
+                type="string"
+                placeholder="Institution"
+                onChange={(e: any) => {
+                  if (e?.target.value) {
+                    setInstitution(e?.target.value);
+                  }
+                }}
+              />
+              <TextInput
+                size="xs"
+                type="string"
+                placeholder="Account owner(s)"
+                onChange={(e: any) => {
+                  setAccountOwner(e?.target.value);
+                  console.log(e.target.value);
+                }}
+              />
+              <Select
+                size="xs"
+                placeholder="Currency"
+                data={[
+                  { value: "pounds", label: "Pounds" },
+                  { value: "dollars", label: "Dollars" },
+                ]}
+                onSelect={(e: any) => {
+                  if (e?.target.value) {
+                    setAccountCurrency(e?.target.value);
+                  }
+                }}
+              />
+              <Button
+                variant="default"
+                size="xs"
+                leftIcon={<IconFileUpload size="1rem" />}
+                onClick={() => {
+                  handleAddAccount({
+                    accountName: accountName,
+                    institution: institution,
+                    accountOwner: accountOwner,
+                    accountCurrency: accountCurrency,
+                    userId: userId,
+                  });
+                }}
+              >
+                Submit
+              </Button>
             </Flex>
-          </Grid.Col>
-          <Grid.Col span={5}>
-            <Flex direction="column">
-              <Title order={3} color="dimmed">
-                Transaction management
-              </Title>
-              <Text fz="xs" color="dimmed">
-                Use this section to customize things like spending categories.
-              </Text>
-              <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
-                Transaction shit goes here.
-              </Paper>
-            </Flex>
-          </Grid.Col>
-        </Grid>
+          </Flex>
+        </Container>
       </>
     );
   }

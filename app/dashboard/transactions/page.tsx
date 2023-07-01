@@ -5,13 +5,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 // Reach Query
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useQueries,
+} from "@tanstack/react-query";
 
 // Auth
 import { useSession, getSession } from "next-auth/react";
 
 // API
-import { fetchTransactions } from "@/app/lib/data/dataHandler";
+import {
+  fetchTransactions,
+  fetchAccountList,
+} from "@/app/lib/data/dataHandler";
 import { addTransaction } from "@/app/lib/data/dataHandler";
 
 // Styles and UI
@@ -37,6 +45,7 @@ import DatePicker from "@/app/components/ui/DateInput";
 // Custom components
 import { Transactions } from "../../components/data/Transactions";
 import { json } from "stream/consumers";
+import { test } from "node:test";
 
 const useStyles = createStyles(
   (theme, { floating }: { floating: boolean }) => ({
@@ -82,8 +91,6 @@ const useStyles = createStyles(
 
 const page = () => {
   // User data
-
-  // User data
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
@@ -95,6 +102,9 @@ const page = () => {
   const [note, setNote] = useState("");
   const [transactionData, setTransactionData] = useState<any>(null);
   const [fetching, setFetching] = useState(false);
+  const [accountData, setAccountData] = useState([
+    { value: "Loading", label: "Loading Accounts" },
+  ]);
 
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
@@ -136,9 +146,8 @@ const page = () => {
   const queryClient = useQueryClient();
 
   const { isLoading, error, data } = useQuery({
-    queryKey: ["transactionData"],
-    queryFn: () =>
-      fetch("http://localhost:3000/api/db").then((res) => res.json()),
+    queryKey: ["accountData"],
+    queryFn: fetchAccountList,
   });
 
   const mutation = useMutation({
@@ -152,6 +161,19 @@ const page = () => {
     mutation.mutate(data);
   }
 
+  if (isLoading) {
+    return <>Loading</>;
+  }
+
+  const testdata = [
+    { value: "hsbc", label: "HSBC" },
+    { value: "bofa", label: "Bank of America" },
+    { value: "revolut", label: "Revolut" },
+  ];
+
+  console.log("Test data", testdata);
+  console.log("Fetch data", data);
+
   return (
     <>
       <Title order={3} color="dimmed">
@@ -161,11 +183,7 @@ const page = () => {
         <Group grow>
           <Select
             placeholder="Account"
-            data={[
-              { value: "hsbc", label: "HSBC" },
-              { value: "bofa", label: "Bank of America" },
-              { value: "revolut", label: "Revolut" },
-            ]}
+            data={data}
             onSelect={(e: any) => {
               if (e?.target.value) {
                 setAccount(e?.target.value);

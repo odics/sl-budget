@@ -8,13 +8,13 @@ export async function GET() {
   const session = await getSession();
   const userId = session?.user?.id;
 
-  const transactions = await prisma.accounts.findMany({
+  const accounts = await prisma.accounts.findMany({
     where: {
       userId: userId,
     },
   });
 
-  return NextResponse.json(transactions);
+  return NextResponse.json(accounts);
 }
 
 export async function POST(request: NextRequest) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
   console.log(account);
 
   try {
-    const createTransaction = await prisma.accounts.create({
+    const createAccount = await prisma.accounts.create({
       data: account,
     });
 

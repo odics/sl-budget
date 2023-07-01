@@ -34,6 +34,7 @@ import {
   IconUserEdit,
   IconArrowsTransferDown,
   IconBuildingBank,
+  IconSettings,
 } from "@tabler/icons-react";
 
 // Custom components
@@ -211,14 +212,14 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
                 description="Manage transactions"
               />
             </Link>
-            <Link href="/dashboard/accounts">
+            <Link href="/dashboard/management">
               <NavLink
-                label="Accounts"
+                label="Settings"
                 icon={
-                  <IconBuildingBank size={24} strokeWidth={2} color="#762d86" />
+                  <IconSettings size={24} strokeWidth={2} color="#762d86" />
                 }
-                active={pathname === "/dashboard/accounts" ? true : false}
-                description="Accounts and settings"
+                active={pathname === "/dashboard/management" ? true : false}
+                description="Accounts, transactions, and other settings"
               />
             </Link>
             <Link href="/dashboard/analytics">
