@@ -2,7 +2,9 @@
 
 import React from "react";
 import { Tabs, Paper, Container } from "@mantine/core";
-import Accounts from "@/app/components/Accounts";
+import Accounts from "@/app/components/settings/Accounts";
+import Transactions from "@/app/components/settings/Transactions";
+
 import {
   IconFileInvoice,
   IconBuildingBank,
@@ -33,7 +35,7 @@ const page = () => {
         </Tabs.Panel>
 
         <Tabs.Panel value="transactions" pt="xs">
-          Transactions
+          <Transactions />
         </Tabs.Panel>
         <Tabs.Panel value="income" pt="xs">
           Income

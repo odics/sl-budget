@@ -191,9 +191,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard">
               <NavLink
                 label="Dashboard"
-                icon={
-                  <IconDashboard size={24} strokeWidth={2} color={"#762d86"} />
-                }
+                icon={<IconDashboard size={24} strokeWidth={2} />}
                 description="Budget overview"
                 active={pathname === "/dashboard" ? true : false}
               />
@@ -201,13 +199,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard/transactions">
               <NavLink
                 label="Transactions"
-                icon={
-                  <IconArrowsTransferDown
-                    size={24}
-                    strokeWidth={2}
-                    color="#762d86"
-                  />
-                }
+                icon={<IconArrowsTransferDown size={24} strokeWidth={2} />}
                 active={pathname === "/dashboard/transactions" ? true : false}
                 description="Manage transactions"
               />
@@ -215,9 +207,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard/management">
               <NavLink
                 label="Settings"
-                icon={
-                  <IconSettings size={24} strokeWidth={2} color="#762d86" />
-                }
+                icon={<IconSettings size={24} strokeWidth={2} />}
                 active={pathname === "/dashboard/management" ? true : false}
                 description="Accounts, transactions, and other settings"
               />
@@ -225,13 +215,7 @@ export default function Dashboard({ children }: { children: React.ReactNode }) {
             <Link href="/dashboard/analytics">
               <NavLink
                 label="Analytics"
-                icon={
-                  <IconPresentationAnalytics
-                    size={24}
-                    strokeWidth={2}
-                    color={"#762d86"}
-                  />
-                }
+                icon={<IconPresentationAnalytics size={24} strokeWidth={2} />}
                 active={pathname === "/dashboard/analytics" ? true : false}
                 description="Budget insights"
               />

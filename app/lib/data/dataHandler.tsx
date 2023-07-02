@@ -200,3 +200,64 @@ export const updateAccount = async (data: any) => {
     console.error(error);
   }
 };
+
+export const fetchTransactionCategories = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/api/db/categories", {
+      cache: "no-store",
+    });
+    const categories = await response.json();
+
+    return categories;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addTransactionCategory = async (data: any) => {
+  try {
+    const response: Response = await fetch(
+      "http://localhost:3000/api/db/categories",
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ data }),
+      }
+    );
+
+    const result = await response.json();
+    console.log("Transaction adding", data);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteTransactionCategory = async (data: any) => {
+  try {
+    console.log("Data being sent via fetch: ", data);
+    const response: Response = await fetch(
+      `http://localhost:3000/api/db/categories/delete/`,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          id: data.categoryId,
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};

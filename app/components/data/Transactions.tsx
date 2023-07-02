@@ -12,6 +12,7 @@ import {
   TextInput,
   Flex,
   Button,
+  Badge,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 
@@ -144,6 +145,17 @@ export function Transactions() {
         <td>{element.category}</td>
         <td>{element.date}</td>
         <td>{element.note}</td>
+        <td>
+          {element.type === "income" ? (
+            <Badge color="cyan" radius="sm" variant="outline">
+              Income
+            </Badge>
+          ) : (
+            <Badge color="red" radius="sm" variant="outline">
+              Expense
+            </Badge>
+          )}
+        </td>
         <td>
           <Center>
             <Group>
@@ -278,6 +290,7 @@ export function Transactions() {
               <th>Category</th>
               <th>Date</th>
               <th>Note</th>
+              <th>Type</th>
               <th className="th-icon">
                 <Center>Action</Center>
               </th>
