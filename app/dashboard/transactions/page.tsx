@@ -105,6 +105,7 @@ const page = () => {
   const [accountData, setAccountData] = useState([
     { value: "Loading", label: "Loading Accounts" },
   ]);
+  const [type, setType] = useState("");
 
   const [focused, setFocused] = useState(false);
   const [value, setValue] = useState("");
@@ -138,6 +139,7 @@ const page = () => {
     account: string;
     amount: number;
     category: string;
+    type: string;
     date: string;
     note: string;
     user: string;
@@ -148,6 +150,18 @@ const page = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ["accountData"],
     queryFn: fetchAccountList,
+  });
+
+  const {
+    isLoading: categoryLoading,
+    error: categoryError,
+    data: categoryData,
+  } = useQuery({
+    queryKey: ["categoryData"],
+    queryFn: () =>
+      fetch("http://localhost:3000/api/db/categories").then((res) =>
+        res.json()
+      ),
   });
 
   const mutation = useMutation({
@@ -164,15 +178,6 @@ const page = () => {
   if (isLoading) {
     return <>Loading</>;
   }
-
-  const testdata = [
-    { value: "hsbc", label: "HSBC" },
-    { value: "bofa", label: "Bank of America" },
-    { value: "revolut", label: "Revolut" },
-  ];
-
-  console.log("Test data", testdata);
-  console.log("Fetch data", data);
 
   return (
     <>
@@ -201,15 +206,29 @@ const page = () => {
           />
           <Select
             placeholder="Category"
-            data={[
-              { value: "entertainment", label: "Entertainment" },
-              { value: "bills", label: "Bills" },
-              { value: "food", label: "Food" },
-              { value: "health", label: "Healthcare" },
-            ]}
+            data={
+              !categoryLoading
+                ? categoryData.map((category: any) => ({
+                    value: category.category,
+                    label: category.category,
+                  }))
+                : [{ label: "Loading", value: "Loading" }]
+            }
             onSelect={(e: any) => {
               if (e?.target.value) {
                 setCategory(e?.target.value);
+              }
+            }}
+          />
+          <Select
+            placeholder="Type"
+            data={[
+              { value: "Income", label: "Income" },
+              { value: "Expense", label: "Expense" },
+            ]}
+            onSelect={(e: any) => {
+              if (e?.target.value) {
+                setType(e?.target.value);
               }
             }}
           />
@@ -234,6 +253,7 @@ const page = () => {
                 account: account,
                 amount: amount,
                 category: category,
+                type: type,
                 date: new Date(date as any).toLocaleDateString(undefined, {
                   day: "numeric",
                   month: "numeric",

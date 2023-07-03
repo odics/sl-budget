@@ -29,6 +29,7 @@ import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import {
   deleteTransaction,
   updateTransaction,
+  fetchAccountList,
 } from "@/app/lib/data/dataHandler";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -102,6 +103,27 @@ export function Transactions() {
       fetch("http://localhost:3000/api/db").then((res) => res.json()),
   });
 
+  const {
+    isLoading: categoryLoading,
+    error: categoryError,
+    data: categoryData,
+  } = useQuery({
+    queryKey: ["categoryData"],
+    queryFn: fetchAccountList,
+  });
+
+  const {
+    isLoading: accountLoading,
+    error: accountError,
+    data: accountData,
+  } = useQuery({
+    queryKey: ["categoryData"],
+    queryFn: () =>
+      fetch("http://localhost:3000/api/db/categories").then((res) =>
+        res.json()
+      ),
+  });
+
   if (isLoading)
     return (
       <Paper shadow="xs" p="sm" mt="sm" mb="md" withBorder>
@@ -146,7 +168,7 @@ export function Transactions() {
         <td>{element.date}</td>
         <td>{element.note}</td>
         <td>
-          {element.type === "income" ? (
+          {element.type === "Income" ? (
             <Badge color="cyan" radius="sm" variant="outline">
               Income
             </Badge>
@@ -216,12 +238,14 @@ export function Transactions() {
               />
               <Select
                 placeholder={category}
-                data={[
-                  { value: "entertainment", label: "Entertainment" },
-                  { value: "bills", label: "Bills" },
-                  { value: "food", label: "Food" },
-                  { value: "health", label: "Healthcare" },
-                ]}
+                data={
+                  !categoryLoading
+                    ? categoryData.map((category: any) => ({
+                        value: category.category,
+                        label: category.category,
+                      }))
+                    : [{ label: "Loading", value: "Loading" }]
+                }
                 onSelect={(e: any) => {
                   if (e?.target.value) {
                     setCategory(e?.target.value);
@@ -236,11 +260,11 @@ export function Transactions() {
               />
               <Select
                 placeholder={account}
-                data={[
-                  { value: "hsbc", label: "HSBC" },
-                  { value: "bofa", label: "Bank of America" },
-                  { value: "revolut", label: "Revolut" },
-                ]}
+                data={
+                  !accountLoading
+                    ? accountData
+                    : [{ label: "Loading", value: "Loading" }]
+                }
                 onSelect={(e: any) => {
                   if (e?.target.value) {
                     setAccount(e?.target.value);

@@ -101,9 +101,9 @@ export default function Accounts() {
   function handleAddAccount(data: any) {
     if (
       !data.accountName ||
-      data.accountCurrency ||
-      data.institution ||
-      data.accountOwner
+      !data.accountCurrency ||
+      !data.institution ||
+      !data.accountOwner
     ) {
       alert("Please make sure that all fields are filled out.");
       return;

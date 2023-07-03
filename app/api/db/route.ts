@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     account: data.account,
     amount: parseInt(data.amount as string),
     category: data.category,
+    type: data.type,
     date: data.date,
     note: data.note,
     userId: data.user,

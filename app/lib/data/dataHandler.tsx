@@ -121,7 +121,6 @@ export const fetchAccountList = async () => {
     const data = accounts.map((account: any) => {
       return { value: account.name, label: account.name };
     });
-    console.log("Data ", data);
     return data;
   } catch (error) {
     console.log(error);
