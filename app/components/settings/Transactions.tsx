@@ -157,7 +157,7 @@ const Transactions = () => {
                   variant="outline"
                   color="gray"
                   radius="sm"
-                  size="lg"
+                  size="md"
                   rightSection={
                     <ActionIcon
                       size="xs"

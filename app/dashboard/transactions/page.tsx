@@ -35,7 +35,11 @@ import {
   Input,
   Title,
   Skeleton,
+  Flex,
+  Modal,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+
 import { DateInput } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
 import { IconFileUpload } from "@tabler/icons-react";
@@ -120,6 +124,8 @@ const page = () => {
     { value: "gbp", label: "🇬🇧 GBP" },
     { value: "aud", label: "🇦🇺 AUD" },
   ];
+
+  const [opened, { open, close }] = useDisclosure(false);
 
   const select = (
     <NativeSelect
