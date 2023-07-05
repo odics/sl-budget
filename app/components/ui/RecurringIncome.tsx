@@ -19,7 +19,11 @@ import {
   Skeleton,
   Container,
   Badge,
+  ActionIcon,
+  rem,
 } from "@mantine/core";
+
+import { IconX } from "@tabler/icons-react";
 
 import "@/app/globals.css";
 
@@ -49,7 +53,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { useSession } from "next-auth/react";
 
 const RecurringIncome = () => {
-  const [selectedDays, setSelectedDays] = useState([]);
+  interface days {
+    date: string;
+  }
+  const [selectedDays, setSelectedDays] = useState<days[]>([]);
 
   const incomeData = [
     {
@@ -108,11 +115,36 @@ const RecurringIncome = () => {
     margin: 0,
   };
 
-  const dates = [
-    { date: "1st of every month" },
-    { date: "15th of every month" },
-    { date: "28th of every month" },
-  ];
+  function addNewDay(day: any) {
+    const suffixes = ["st", "nd", "rd"];
+    const specialSuffix = "th";
+    const lastDigit = day % 10;
+    const specialCases = [11, 12, 13];
+
+    // Handle special cases (11th, 12th, 13th)
+    if (specialCases.includes(day)) {
+      const newDate = { date: day + specialSuffix };
+      const findDay = selectedDays.find((day) => day.date === newDate.date);
+      const dayExists = !!findDay;
+      if (dayExists == false) {
+        setSelectedDays([...selectedDays, { date: day + specialSuffix }]);
+      }
+    } else {
+      const suffix = suffixes[lastDigit - 1] || specialSuffix;
+      const newDate = { date: day + specialSuffix };
+      const findDay = selectedDays.find((day) => day.date === newDate.date);
+      const dayExists = !!findDay;
+      if (dayExists == false) {
+        setSelectedDays([...selectedDays, { date: day + suffix }]);
+        console.log(selectedDays);
+      }
+    }
+  }
+
+  function removeDay(day: any) {
+    const newDays = selectedDays.filter((obj) => obj.date !== day);
+    setSelectedDays([...newDays]);
+  }
 
   return (
     <Container>
@@ -133,12 +165,20 @@ const RecurringIncome = () => {
           <TextInput
             size="xs"
             type="string"
-            placeholder="Income amount"
+            placeholder="Transaction amount"
             onChange={(e: any) => {
               if (e?.target.value) {
                 setIncomeAmount(e?.target.value);
               }
             }}
+          />
+          <Select
+            placeholder="Transaction type"
+            data={[
+              { label: "Income", value: "Income" },
+              { label: "Expense", value: "Expense" },
+            ]}
+            size="xs"
           />
           <TextInput
             size="xs"
@@ -161,19 +201,39 @@ const RecurringIncome = () => {
           </Button>
         </div>
         <div className="flex flex-col p-2">
-          <DayPicker />
+          <DayPicker setSelectedDays={addNewDay} removeDay={removeDay} />
         </div>
         <div className="flex flex-col p-2">
           <div className="flex flex-col p-2 gap-2 items-center border border-[#373a40] rounded">
-            {dates.length !== 0
-              ? dates.map((date) => {
+            <Text fz="xs" color="dimmed">
+              Select one or more dates
+            </Text>
+            {selectedDays.length !== 0
+              ? selectedDays.map((date) => {
                   return (
-                    <Badge color="gray" variant="outline" radius="sm" fullWidth>
-                      {date.date}
+                    <Badge
+                      color="gray"
+                      variant="outline"
+                      radius="sm"
+                      fullWidth
+                      rightSection={
+                        <ActionIcon
+                          size="xs"
+                          radius="xl"
+                          variant="transparent"
+                          onClick={() => {
+                            removeDay(date.date);
+                          }}
+                        >
+                          <IconX size={rem(10)} />
+                        </ActionIcon>
+                      }
+                    >
+                      {date.date} of every month
                     </Badge>
                   );
                 })
-              : "Pick dates"}
+              : null}
           </div>
         </div>
       </Flex>
