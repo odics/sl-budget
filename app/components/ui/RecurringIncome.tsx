@@ -18,11 +18,12 @@ import {
   Modal,
   Skeleton,
   Container,
+  Badge,
 } from "@mantine/core";
 
 import "@/app/globals.css";
 
-import { DatePickerInput } from "@mantine/dates";
+import DayPicker from "./DayPicker";
 
 // React Query
 import {
@@ -46,9 +47,10 @@ import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 
 import { useSession } from "next-auth/react";
-import Accounts from "./Accounts";
 
-const Income = () => {
+const RecurringIncome = () => {
+  const [selectedDays, setSelectedDays] = useState([]);
+
   const incomeData = [
     {
       account: "HSBC",
@@ -88,36 +90,6 @@ const Income = () => {
     queryFn: fetchAccountList,
   });
 
-  const rows = incomeData.map((element: any) => (
-    <tr key={element.account}>
-      <td>{element.account}</td>
-      <td>{element.amount}</td>
-      <td>{element.type}</td>
-      <td>{element.frequency}</td>
-      <td>
-        <Tooltip label={element.dayOfMonth}>
-          <UnstyledButton>View dates</UnstyledButton>
-        </Tooltip>
-      </td>
-      <td>
-        <Center>
-          <Group>
-            <Tooltip label="Edit income">
-              <UnstyledButton>
-                <IconPencilMinus size="1.2rem" />
-              </UnstyledButton>
-            </Tooltip>
-            <Tooltip label="Delete income">
-              <UnstyledButton>
-                <IconTrashXFilled size="1.2rem" />
-              </UnstyledButton>
-            </Tooltip>
-          </Group>
-        </Center>
-      </td>
-    </tr>
-  ));
-
   function dateTest(dates: any) {
     const newDates = dates.map((date: any) => {
       const newDate = new Date(date as any).toLocaleDateString(undefined, {
@@ -136,48 +108,23 @@ const Income = () => {
     margin: 0,
   };
 
+  const dates = [
+    { date: "1st of every month" },
+    { date: "15th of every month" },
+    { date: "28th of every month" },
+  ];
+
   return (
     <Container>
-      <Flex direction="column">
-        <Title order={3} color="dimmed">
-          Recurring income
-        </Title>
-        <Text fz="xs" color="dimmed" className="mb-4">
-          Use this section to set up recurring sources of income. Income will be
-          automatically added to the list of transactions based on the specified
-          frequency, and day of the month in which it is received.
-        </Text>
-        <Title order={4} color="dimmed">
-          Current recurring income
-        </Title>
-        <Divider my="sm" />
-        <Table striped className="mb-6">
-          <thead>
-            <tr>
-              <th>Receiving account</th>
-              <th>Income amount</th>
-              <th>Income type</th>
-              <th>Income frequency</th>
-              <th>Dates of deposit</th>
-              <th className="th-icon">
-                <Center>Action</Center>
-              </th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-        <Title order={4} color="dimmed">
-          Add recurring income
-        </Title>
-        <Divider my="sm" />
-        <div className="flex gap-2">
+      <Flex direction="row">
+        <div className="flex flex-col gap-2 p-2">
           <Select
             placeholder="Account"
             data={
               !isLoading
                 ? data.map((account: any) => ({
-                    value: account.name,
-                    label: account.name,
+                    value: account.value,
+                    label: account.label,
                   }))
                 : [{ label: "Loading", value: "Loading" }]
             }
@@ -202,18 +149,6 @@ const Income = () => {
               console.log(e.target.value);
             }}
           />
-          <DatePickerInput
-            className="cal-style"
-            clearable
-            type="multiple"
-            dropdownType="modal"
-            placeholder="Pick date"
-            value={calValue}
-            onChange={setCalValue}
-            mx="auto"
-            maw={400}
-            size="xs"
-          />
           <Button
             variant="default"
             size="xs"
@@ -225,9 +160,25 @@ const Income = () => {
             Submit
           </Button>
         </div>
+        <div className="flex flex-col p-2">
+          <DayPicker />
+        </div>
+        <div className="flex flex-col p-2">
+          <div className="flex flex-col p-2 gap-2 items-center border border-[#373a40] rounded">
+            {dates.length !== 0
+              ? dates.map((date) => {
+                  return (
+                    <Badge color="gray" variant="outline" radius="sm" fullWidth>
+                      {date.date}
+                    </Badge>
+                  );
+                })
+              : "Pick dates"}
+          </div>
+        </div>
       </Flex>
     </Container>
   );
 };
 
-export default Income;
+export default RecurringIncome;

@@ -28,3 +28,15 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+.cal-day {
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 4px;
+}
+
+.cal-day:hover {
+  background-color: #25262b;
+  cursor: pointer;
+  border-radius: 4px;
+}
