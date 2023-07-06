@@ -169,11 +169,11 @@ export function Transactions() {
         <td>{element.note}</td>
         <td>
           {element.type === "Income" ? (
-            <Badge color="cyan" radius="sm" variant="outline">
+            <Badge color="cyan" radius="sm" variant="outline" size="xs">
               Income
             </Badge>
           ) : (
-            <Badge color="red" radius="sm" variant="outline">
+            <Badge color="red" radius="sm" variant="outline" size="xs">
               Expense
             </Badge>
           )}

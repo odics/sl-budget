@@ -260,3 +260,44 @@ export const deleteTransactionCategory = async (data: any) => {
     console.error(error);
   }
 };
+
+// Recurring income
+
+export const addRecurringIncome = async (data: any) => {
+  try {
+    const response: Response = await fetch(
+      "http://localhost:3000/api/db/recurring-income",
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ data }),
+      }
+    );
+
+    const result = await response.json();
+    console.log("Transaction adding", data);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const fetchRecurringIncome = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/db/recurring-income",
+      {
+        cache: "no-store",
+      }
+    );
+    const categories = await response.json();
+
+    return categories;
+  } catch (error) {
+    console.log(error);
+  }
+};

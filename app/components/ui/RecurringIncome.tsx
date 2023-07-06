@@ -38,7 +38,11 @@ import {
 } from "@tanstack/react-query";
 
 import { useState } from "react";
-import { fetchAccountList } from "@/app/lib/data/dataHandler";
+import {
+  fetchAccountList,
+  addRecurringIncome,
+  fetchRecurringIncome,
+} from "@/app/lib/data/dataHandler";
 
 import {
   IconPencilMinus,
@@ -57,30 +61,7 @@ const RecurringIncome = () => {
     date: string;
   }
   const [selectedDays, setSelectedDays] = useState<days[]>([]);
-
-  const incomeData = [
-    {
-      account: "HSBC",
-      amount: "4200",
-      type: "Salary",
-      frequency: "Monthly",
-      dayOfMonth: "15th",
-    },
-    {
-      account: "Revolut",
-      amount: "1200",
-      type: "Salary",
-      frequency: "Bi-monthly",
-      dayOfMonth: "15th and 28th",
-    },
-    {
-      account: "HSBC",
-      amount: "2300",
-      type: "Salary",
-      frequency: "Monthly",
-      dayOfMonth: "15",
-    },
-  ];
+  const [incomeData, setIncomeData] = useState({});
 
   const [incomeAccount, setIncomeAccount] = useState("");
   const [incomeAmount, setIncomeAmount] = useState("");
@@ -96,6 +77,17 @@ const RecurringIncome = () => {
     queryKey: ["accountData"],
     queryFn: fetchAccountList,
   });
+
+  const recurringIncome = useMutation({
+    mutationFn: addRecurringIncome,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["recurringIncome"] });
+    },
+  });
+
+  function mutateIncome(data: any) {
+    recurringIncome.mutate(data);
+  }
 
   function dateTest(dates: any) {
     const newDates = dates.map((date: any) => {
@@ -136,7 +128,6 @@ const RecurringIncome = () => {
       const dayExists = !!findDay;
       if (dayExists == false) {
         setSelectedDays([...selectedDays, { date: day + suffix }]);
-        console.log(selectedDays);
       }
     }
   }
@@ -160,6 +151,11 @@ const RecurringIncome = () => {
                   }))
                 : [{ label: "Loading", value: "Loading" }]
             }
+            onSelect={(e: any) => {
+              if (e?.target.value) {
+                setIncomeAccount(e?.target.value);
+              }
+            }}
             size="xs"
           />
           <TextInput
@@ -175,18 +171,22 @@ const RecurringIncome = () => {
           <Select
             placeholder="Transaction type"
             data={[
-              { label: "Income", value: "Income" },
-              { label: "Expense", value: "Expense" },
+              { label: "Salary", value: "Salary" },
+              { label: "Other", value: "Other" },
             ]}
+            onSelect={(e: any) => {
+              if (e?.target.value) {
+                setIncomeType(e?.target.value);
+              }
+            }}
             size="xs"
           />
           <TextInput
             size="xs"
             type="string"
-            placeholder="Income type (salary, etc)"
+            placeholder="Note"
             onChange={(e: any) => {
               setIncomeType(e?.target.value);
-              console.log(e.target.value);
             }}
           />
           <Button
@@ -194,14 +194,22 @@ const RecurringIncome = () => {
             size="xs"
             leftIcon={<IconFileUpload size="1rem" />}
             onClick={() => {
-              dateTest(calValue);
+              mutateIncome({
+                account: incomeAccount,
+                amount: incomeAmount,
+                type: incomeType,
+                dates: selectedDays.map((day) => {
+                  return day.date.slice(0, -2); // This is ugly
+                }),
+              });
+              close;
             }}
           >
             Submit
           </Button>
         </div>
         <div className="flex flex-col p-2">
-          <DayPicker setSelectedDays={addNewDay} removeDay={removeDay} />
+          <DayPicker setSelectedDays={addNewDay} />
         </div>
         <div className="flex flex-col p-2">
           <div className="flex flex-col p-2 gap-2 items-center border border-[#373a40] rounded">

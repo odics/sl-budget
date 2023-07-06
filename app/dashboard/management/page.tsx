@@ -4,7 +4,6 @@ import React from "react";
 import { Tabs, Paper, Container } from "@mantine/core";
 import Accounts from "@/app/components/settings/Accounts";
 import Transactions from "@/app/components/settings/Transactions";
-import Income from "@/app/components/settings/Income";
 
 import {
   IconFileInvoice,
@@ -13,22 +12,24 @@ import {
   IconCoin,
 } from "@tabler/icons-react";
 
+import RecurringTransactions from "@/app/components/settings/RecurringTransactions";
+
 const page = () => {
   return (
     <Paper shadow="xs" p="sm" mt="sm" withBorder>
       <Tabs defaultValue="accounts" orientation="vertical">
         <Tabs.List>
           <Tabs.Tab value="accounts" icon={<IconBuildingBank size="1rem" />}>
-            Accounts
-          </Tabs.Tab>
-          <Tabs.Tab value="income" icon={<IconMoneybag size="1rem" />}>
-            Recurring Income
-          </Tabs.Tab>
-          <Tabs.Tab value="expenses" icon={<IconCoin size="1rem" />}>
-            Recurring Expenses
+            Account settings
           </Tabs.Tab>
           <Tabs.Tab value="transactions" icon={<IconFileInvoice size="1rem" />}>
-            Transactions
+            Transaction settings
+          </Tabs.Tab>
+          <Tabs.Tab
+            value="recurring-transactions"
+            icon={<IconMoneybag size="1rem" />}
+          >
+            Recurring Transactions
           </Tabs.Tab>
         </Tabs.List>
 
@@ -39,8 +40,8 @@ const page = () => {
         <Tabs.Panel value="transactions" pt="xs">
           <Transactions />
         </Tabs.Panel>
-        <Tabs.Panel value="income" pt="xs">
-          <Income />
+        <Tabs.Panel value="recurring-transactions" pt="xs">
+          <RecurringTransactions />
         </Tabs.Panel>
       </Tabs>
     </Paper>
